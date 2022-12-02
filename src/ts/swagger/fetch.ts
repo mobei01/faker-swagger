@@ -4,7 +4,7 @@ import {inferSchema} from '../utils'
 import { cloneDeep } from 'lodash';
 
 function getSampleSchema(schema) {
-  return schema
+  return cloneDeep(schema)
 }
 
 function parserParams(params) {
