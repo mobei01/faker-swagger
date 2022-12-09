@@ -1,14 +1,15 @@
 {
-  "include": [
-      "src/ts/**/*"
-  ],
+  // "include": [
+  //     "src/**/*"
+  // ],
   "compilerOptions": {
-      "module": "ESNext",
-      "target": "ESNext",
-      "moduleResolution": "node",
-      "declaration": true,
-      "declarationDir": "build/types",
-      "baseUrl": ".",
-      "noImplicitAny": false
-  }
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationDir": "build/types",
+    "baseUrl": ".",
+    "noImplicitAny": false
+  },
+  "exclude": ["node_modules", "source", "**/__tests__/**"]
 }

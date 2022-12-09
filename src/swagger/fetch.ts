@@ -1,18 +1,17 @@
+import {ApiDoc} from '../_types_/swagger'
+import { IOpenAPI, IServer } from '../_types_/OpenAPI'
+import { Spec } from "swagger-schema-official";
 
 import SwaggerClient from 'swagger-client';
 import {inferSchema} from '../utils'
 import { cloneDeep } from 'lodash';
-
-function getSampleSchema(schema) {
-  return cloneDeep(schema)
-}
 
 function parserParams(params) {
   const apiParams = params.map(param => {
     const schema = inferSchema(param)
     return {
       // ...param,
-      example: schema ? getSampleSchema(schema) : null
+      example: schema ? cloneDeep(schema) : null
     }
   })
   return apiParams
@@ -23,7 +22,7 @@ function parserResponsesV2(res) {
   codes.map(code => {
     const response = responses[code]
     const schema = inferSchema(response)
-    response.example = schema ? getSampleSchema(schema) : null
+    response.example = schema ? cloneDeep(schema) : null
   })
   return responses
 }
@@ -40,10 +39,10 @@ function parserResponsesV3(res) {
   // return responses
 }
 
-function parserSpecV2V3(specV2v3) {
+function parserSpecV2V3(specV2v3: Spec | IOpenAPI) {
   const spec = cloneDeep(specV2v3)
-  const {paths, openapi, basePath} = spec
-  const isV3 = openapi === '3.0.0'
+  const {paths, basePath} = spec as Spec
+  const {openapi} = spec as IOpenAPI
   const apiList = Object.keys(paths)
 
   const apiDoc = {
@@ -58,7 +57,7 @@ function parserSpecV2V3(specV2v3) {
       method,
       // ...others,
       parameters: parserParams(others.parameters),
-      responses: isV3 ? parserResponsesV3(others.responses) : parserResponsesV2(others.responses),
+      responses: openapi === '3.0.0' ? parserResponsesV3(others.responses) : parserResponsesV2(others.responses),
     }
     apiDoc[url] = item
   })
@@ -70,13 +69,17 @@ function parserSpecV1() {
 }
 
 export default async function fetchUrl(url: string) {
-  const res = await SwaggerClient(url)
-  const spec = res.spec
+  const res: ApiDoc = await SwaggerClient(url)
+  console.log(res);
+  
+  const spec: Spec | IOpenAPI = res.spec
   let apiDoc
-  if(spec.swaggerVersion) {
-    parserSpecV1()
-  } else {
+  // if(spec?.swaggerVersion) {
+  //   parserSpecV1()
+  // } else {
     apiDoc = parserSpecV2V3(spec)
-  }
+  // }
+  
+  console.log(apiDoc);
   return apiDoc
 }

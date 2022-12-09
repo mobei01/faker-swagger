@@ -1,4 +1,4 @@
-
+import {fakeData} from '../faker/index'
 
 type StringRes = {
   description: string,
@@ -27,16 +27,27 @@ type Response = {
   example: StringRes | ObjRes | ArrRes
 }
 
-function parser200() {}
+function parser200(responses: Response) {
+  const result = fakeData(responses.example)
+  console.log(result);
+  
+  return result
+}
 
 export default function parserResponse(responses: Record<Codes, Response>) {
   console.log(responses);
   const codes = Object.keys(responses)
 
-  let response: Record<Codes, any>
+  let response: Record<Codes, any> = {
+    200: {},
+    201: {},
+    401: {},
+    403: {},
+    404: {}
+  }
   codes.forEach((code: Codes) => {
     if(code === '200') {
-      response[code] = parser200()
+      response[code] = parser200(responses[code])
     } else {
       response[code] = responses[code].example
     }
