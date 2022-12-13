@@ -1,0 +1,816 @@
+{
+	"openapi": "3.0.3",
+	"info": {
+		"title": "Spring Boot中使用Swagger3构建RESTful APIs",
+		"contact": {
+			"name": "tc",
+			"email": "1043023220@qq.com"
+		},
+		"version": "1.0"
+	},
+	"servers": [{
+		"url": "http://localhost:8088",
+		"description": "Inferred Url"
+	}],
+	"tags": [{
+		"name": "公共的分类",
+		"description": "Sys Category Controller"
+	}, {
+		"name": "公共路由管理",
+		"description": "Index Controller"
+	}, {
+		"name": "商品分类",
+		"description": "Goods Category Controller"
+	}, {
+		"name": "商品控制器",
+		"description": "Goods Controller"
+	}],
+	"paths": {
+		"/app/goodsCategory/addGoodsCategory": {
+			"post": {
+				"tags": ["商品分类"],
+				"summary": "addGoodsCategory",
+				"operationId": "addGoodsCategoryUsingPOST",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AddSysCategoryForm"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/Result«long»"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "Created"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"security": [{
+					"Authorization": []
+				}]
+			}
+		},
+		"/app/goodsCategory/getGoodsCategoryByLevel/{level}": {
+			"get": {
+				"tags": ["商品分类"],
+				"summary": "getGoodsCategoryByLevel",
+				"operationId": "getGoodsCategoryByLevelUsingGET",
+				"parameters": [{
+					"name": "level",
+					"in": "path",
+					"description": "level",
+					"required": true,
+					"style": "simple",
+					"schema": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/Result«List«GoodsCategory对象VO»»"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"security": [{
+					"Authorization": []
+				}]
+			}
+		},
+		"/app/goodsCategory/queryGoodsCategory": {
+			"post": {
+				"tags": ["商品分类"],
+				"summary": "queryGoodsCategory",
+				"operationId": "queryGoodsCategoryUsingPOST",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/QueryCategoryForm"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/Result«IPage«GoodsCategory对象VO»»"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "Created"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"security": [{
+					"Authorization": []
+				}]
+			}
+		},
+		"/goods/addGoods": {
+			"post": {
+				"tags": ["商品控制器"],
+				"summary": "新增商品",
+				"operationId": "addGoodsUsingPOST",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/新增商品对象"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/Result«long»"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "Created"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"security": [{
+					"Authorization": []
+				}]
+			}
+		},
+		"/goods/updateGoods": {
+			"post": {
+				"tags": ["商品控制器"],
+				"summary": "修改商品",
+				"operationId": "updateGoodsUsingPOST",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/新增商品对象"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/Result«long»"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "Created"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"security": [{
+					"Authorization": []
+				}]
+			}
+		},
+		"/index/addUser": {
+			"post": {
+				"tags": ["公共路由管理"],
+				"summary": "addUser",
+				"operationId": "addUserUsingPOST",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AddUserForm"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/Result«long»"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "Created"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"security": [{
+					"Authorization": []
+				}]
+			}
+		},
+		"/index/appLogin": {
+			"post": {
+				"tags": ["公共路由管理"],
+				"summary": "appLogin",
+				"operationId": "appLoginUsingPOST",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/用户登录接口"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/Result«string»"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "Created"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"security": [{
+					"Authorization": []
+				}]
+			}
+		},
+		"/sys/category/addSysCategory": {
+			"post": {
+				"tags": ["公共的分类"],
+				"summary": "addSysCategory",
+				"operationId": "addSysCategoryUsingPOST",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AddSysCategoryForm"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/Result«long»"
+								}
+							}
+						}
+					},
+					"201": {
+						"description": "Created"
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"security": [{
+					"Authorization": []
+				}]
+			}
+		},
+		"/sys/category/getSysCategoryTree": {
+			"get": {
+				"tags": ["公共的分类"],
+				"summary": "getSysCategoryTree",
+				"operationId": "getSysCategoryTreeUsingGET",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/Result«List«SysCategory对象 VO»»"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"security": [{
+					"Authorization": []
+				}]
+			}
+		},
+		"/sys/category/querySysCategory": {
+			"get": {
+				"tags": ["公共的分类"],
+				"summary": "querySysCategory",
+				"operationId": "querySysCategoryUsingGET",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"*/*": {
+								"schema": {
+									"$ref": "#/components/schemas/Result«List«SysCategory对象 VO»»"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized"
+					},
+					"403": {
+						"description": "Forbidden"
+					},
+					"404": {
+						"description": "Not Found"
+					}
+				},
+				"security": [{
+					"Authorization": []
+				}]
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"AddSysCategoryForm": {
+				"title": "AddSysCategoryForm",
+				"type": "object",
+				"properties": {
+					"categoryName": {
+						"type": "string",
+						"description": "分类名称"
+					},
+					"parentId": {
+						"type": "integer",
+						"description": "父级id default 0 ",
+						"format": "int64"
+					}
+				}
+			},
+			"AddUserForm": {
+				"title": "AddUserForm",
+				"type": "object",
+				"properties": {
+					"cellPhone": {
+						"type": "string",
+						"description": "手机号码"
+					},
+					"loginName": {
+						"type": "string",
+						"description": "登录名"
+					},
+					"password": {
+						"type": "string",
+						"description": "密码MD5加密"
+					},
+					"userName": {
+						"type": "string",
+						"description": "用户名"
+					}
+				}
+			},
+			"GoodsCategory对象VO": {
+				"title": "GoodsCategory对象VO",
+				"type": "object",
+				"properties": {
+					"categoryLevel": {
+						"type": "integer",
+						"description": "版本号",
+						"format": "int32"
+					},
+					"categoryName": {
+						"type": "string",
+						"description": "分类名称"
+					},
+					"categoryStr": {
+						"type": "string",
+						"description": "分类1级_二级_三级"
+					},
+					"parentId": {
+						"type": "integer",
+						"description": "父级id",
+						"format": "int64"
+					}
+				},
+				"description": "商品租户分类表"
+			},
+			"IPage«GoodsCategory对象VO»": {
+				"title": "IPage«GoodsCategory对象VO»",
+				"type": "object",
+				"properties": {
+					"current": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"pages": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"records": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/GoodsCategory对象VO"
+						}
+					},
+					"size": {
+						"type": "integer",
+						"format": "int64"
+					},
+					"total": {
+						"type": "integer",
+						"format": "int64"
+					}
+				}
+			},
+			"OrderItem": {
+				"title": "OrderItem",
+				"type": "object",
+				"properties": {
+					"asc": {
+						"type": "boolean"
+					},
+					"column": {
+						"type": "string"
+					}
+				}
+			},
+			"QueryCategoryForm": {
+				"title": "QueryCategoryForm",
+				"type": "object",
+				"properties": {
+					"categoryName": {
+						"type": "string",
+						"description": "分类名称"
+					},
+					"current": {
+						"type": "integer",
+						"description": "当前页",
+						"format": "int64"
+					},
+					"orders": {
+						"type": "array",
+						"description": "排序",
+						"items": {
+							"$ref": "#/components/schemas/OrderItem"
+						}
+					},
+					"pageSize": {
+						"type": "integer",
+						"description": "每页条数",
+						"format": "int64"
+					}
+				}
+			},
+			"Result«IPage«GoodsCategory对象VO»»": {
+				"title": "Result«IPage«GoodsCategory对象VO»»",
+				"type": "object",
+				"properties": {
+					"data": {
+						"description": "响应数据",
+						"$ref": "#/components/schemas/IPage«GoodsCategory对象VO»"
+					},
+					"resultCode": {
+						"type": "string",
+						"description": "响应状态"
+					},
+					"resultMsg": {
+						"type": "string",
+						"description": "响应消息"
+					},
+					"traceId": {
+						"type": "string",
+						"description": "traceId"
+					}
+				}
+			},
+			"Result«List«GoodsCategory对象VO»»": {
+				"title": "Result«List«GoodsCategory对象VO»»",
+				"type": "object",
+				"properties": {
+					"data": {
+						"type": "array",
+						"description": "响应数据",
+						"items": {
+							"$ref": "#/components/schemas/GoodsCategory对象VO"
+						}
+					},
+					"resultCode": {
+						"type": "string",
+						"description": "响应状态"
+					},
+					"resultMsg": {
+						"type": "string",
+						"description": "响应消息"
+					},
+					"traceId": {
+						"type": "string",
+						"description": "traceId"
+					}
+				}
+			},
+			"Result«List«SysCategory对象 VO»»": {
+				"title": "Result«List«SysCategory对象 VO»»",
+				"type": "object",
+				"properties": {
+					"data": {
+						"type": "array",
+						"description": "响应数据",
+						"items": {
+							"$ref": "#/components/schemas/SysCategory对象 VO"
+						}
+					},
+					"resultCode": {
+						"type": "string",
+						"description": "响应状态"
+					},
+					"resultMsg": {
+						"type": "string",
+						"description": "响应消息"
+					},
+					"traceId": {
+						"type": "string",
+						"description": "traceId"
+					}
+				}
+			},
+			"Result«long»": {
+				"title": "Result«long»",
+				"type": "object",
+				"properties": {
+					"data": {
+						"type": "integer",
+						"description": "响应数据",
+						"format": "int64"
+					},
+					"resultCode": {
+						"type": "string",
+						"description": "响应状态"
+					},
+					"resultMsg": {
+						"type": "string",
+						"description": "响应消息"
+					},
+					"traceId": {
+						"type": "string",
+						"description": "traceId"
+					}
+				}
+			},
+			"Result«string»": {
+				"title": "Result«string»",
+				"type": "object",
+				"properties": {
+					"data": {
+						"type": "string",
+						"description": "响应数据"
+					},
+					"resultCode": {
+						"type": "string",
+						"description": "响应状态"
+					},
+					"resultMsg": {
+						"type": "string",
+						"description": "响应消息"
+					},
+					"traceId": {
+						"type": "string",
+						"description": "traceId"
+					}
+				}
+			},
+			"SysCategory对象 VO": {
+				"title": "SysCategory对象 VO",
+				"type": "object",
+				"properties": {
+					"categoryName": {
+						"type": "string",
+						"description": "分类名称"
+					},
+					"categoryStr": {
+						"type": "string",
+						"description": "分类1级_二级_三级"
+					},
+					"childrenList": {
+						"type": "array",
+						"description": "子集",
+						"items": {
+							"$ref": "#/components/schemas/SysCategory对象 VO"
+						}
+					},
+					"id": {
+						"type": "integer",
+						"description": "id",
+						"format": "int64"
+					},
+					"parentId": {
+						"type": "integer",
+						"description": "父级id",
+						"format": "int64"
+					}
+				},
+				"description": "sys_category"
+			},
+			"新增商品对象": {
+				"title": "新增商品对象",
+				"type": "object",
+				"properties": {
+					"categoryId": {
+						"type": "integer",
+						"description": "分类id",
+						"format": "int64"
+					},
+					"goodsName": {
+						"type": "string",
+						"description": "商品名称"
+					},
+					"imgUrl": {
+						"type": "string",
+						"description": "主图片"
+					},
+					"purchaseList": {
+						"type": "array",
+						"description": "采购单位集合",
+						"items": {
+							"$ref": "#/components/schemas/新增商品规格对象"
+						}
+					},
+					"saleList": {
+						"type": "array",
+						"description": "销售单位集合",
+						"items": {
+							"$ref": "#/components/schemas/新增商品规格对象"
+						}
+					},
+					"unitId": {
+						"type": "integer",
+						"description": "商品单位id",
+						"format": "int64"
+					},
+					"unitName": {
+						"type": "string",
+						"description": "商品单位名称"
+					}
+				},
+				"description": "bus_goods"
+			},
+			"新增商品规格对象": {
+				"title": "新增商品规格对象",
+				"type": "object",
+				"properties": {
+					"convertNum": {
+						"type": "number",
+						"description": "转换系数",
+						"format": "bigdecimal"
+					},
+					"imgUrl": {
+						"type": "string",
+						"description": "图片"
+					},
+					"skuName": {
+						"type": "string",
+						"description": "规格名称"
+					},
+					"skuPrice": {
+						"type": "number",
+						"description": "销售价格/采购价格",
+						"format": "bigdecimal"
+					},
+					"unitId": {
+						"type": "integer",
+						"description": "单位id",
+						"format": "int64"
+					},
+					"unitName": {
+						"type": "string",
+						"description": "单位名称"
+					}
+				},
+				"description": "bus_goods_sku"
+			},
+			"用户登录接口": {
+				"title": "用户登录接口",
+				"type": "object",
+				"properties": {
+					"loginName": {
+						"type": "string",
+						"description": "登录名"
+					},
+					"password": {
+						"type": "string",
+						"description": "密码MD5加密"
+					}
+				},
+				"description": "IndexUserLoginForm"
+			}
+		},
+		"securitySchemes": {
+			"Authorization": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		}
+	}
+}

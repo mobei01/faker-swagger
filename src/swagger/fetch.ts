@@ -1,67 +1,62 @@
 import {ApiDoc} from '../_types_/swagger'
-import { IOpenAPI, IServer } from '../_types_/OpenAPI'
+import { IOpenAPI, IOperation, IResponses } from '../_types_/OpenAPI'
+import {SchemaWithoutRef, FakeGenOutput} from '../_types_/common'
 import { Spec } from "swagger-schema-official";
 
 import SwaggerClient from 'swagger-client';
 import {inferSchema} from '../utils'
-import { cloneDeep } from 'lodash';
+import { cloneDeep, mapValues, upperCase } from 'lodash';
 
-function parserParams(params) {
-  const apiParams = params.map(param => {
-    const schema = inferSchema(param)
-    return {
-      // ...param,
-      example: schema ? cloneDeep(schema) : null
+type Codes = '200' | '201' | '401' | '403' | '404'
+
+function parserResponsesV3(res: Record<Codes, SchemaWithoutRef>): SchemaWithoutRef {
+  // TODO:
+  let responses
+  const codes = Object.keys(res)
+  codes.forEach((code: Codes) => {
+    if(code === '200') {
+      const response = res[code]
+      const schema = response.content?.['application/json'] && inferSchema(response.content['application/json'])
+      responses = schema ? cloneDeep(schema) : null
+      // response.example = schema ? cloneDeep(schema) : null
     }
-  })
-  return apiParams
-}
-function parserResponsesV2(res) {
-  const responses = cloneDeep(res)
-  const codes = Object.keys(responses)
-  codes.map(code => {
-    const response = responses[code]
-    const schema = inferSchema(response)
-    response.example = schema ? cloneDeep(schema) : null
   })
   return responses
 }
 
-function parserResponsesV3(res) {
-  // TODO:
-  // const responses = cloneDeep(res)
-  // const codes = Object.keys(responses)
-  // codes.forEach(code => {
-  //   const response = responses[code]
-  //   const schema = response.content?.['application/json'] && inferSchema(response.content['application/json'])
-  //   response.example = schema ? getSampleSchema(schema) : null
-  // })
-  // return responses
+function parserSpecV3(spec): Record<string, FakeGenOutput> {
+  return
 }
 
-function parserSpecV2V3(specV2v3: Spec | IOpenAPI) {
-  const spec = cloneDeep(specV2v3)
-  const {paths, basePath} = spec as Spec
-  const {openapi} = spec as IOpenAPI
-  const apiList = Object.keys(paths)
-
-  const apiDoc = {
-    basePath
-  }
-  apiList.forEach(url => {
-    const method = Object.keys(paths[url])[0]
-    const others = paths[url][method]
-
-    const item = {
-      apiUrl: url,
-      method,
-      // ...others,
-      parameters: parserParams(others.parameters),
-      responses: openapi === '3.0.0' ? parserResponsesV3(others.responses) : parserResponsesV2(others.responses),
+function parserResponsesV2(res: IResponses): SchemaWithoutRef {
+  let responses: SchemaWithoutRef
+  const codes = Object.keys(res)
+  codes.forEach((code: Codes) => {
+    if(code === '200') {
+      const schema: SchemaWithoutRef = inferSchema(res[code])
+      responses = schema ? cloneDeep(schema) : {}
     }
-    apiDoc[url] = item
   })
-  return apiDoc
+  return responses
+}
+
+function parserSpecV2(spec: Spec): Record<string, FakeGenOutput> {
+  const {paths, basePath} = spec
+
+  const outputs: Record<string, FakeGenOutput> = {}
+  mapValues(paths, (pathItem, pathName) => {
+    mapValues(pathItem, (schema: IOperation, method) => {
+      const url = `${basePath}${pathName}`
+      outputs[url] = {
+        operationId: schema.operationId,
+        path: url,
+        method: upperCase(method),
+        summary: schema.summary,
+        mocks: parserResponsesV2(schema.responses),
+      }
+    });
+  });
+  return outputs
 }
 
 function parserSpecV1() {
@@ -73,13 +68,17 @@ export default async function fetchUrl(url: string) {
   console.log(res);
   
   const spec: Spec | IOpenAPI = res.spec
-  let apiDoc
+  const {openapi} = spec as IOpenAPI
+  let apiDoc: Record<string, FakeGenOutput>
   // if(spec?.swaggerVersion) {
   //   parserSpecV1()
   // } else {
-    apiDoc = parserSpecV2V3(spec)
+    
   // }
-  
-  console.log(apiDoc);
+  if(openapi) {
+    apiDoc = parserSpecV3(spec as IOpenAPI)
+  } else {
+    apiDoc = parserSpecV2(spec as Spec)
+  }
   return apiDoc
 }

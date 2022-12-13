@@ -1,16 +1,10 @@
 import parserSwagger from './swagger'
-import parserUrl from './parserUrl';
+import {fakeData} from './faker/index'
 
 parserSwagger('https://testgw.syounggroup.com/athena-service/v2/api-docs').then(apiDoc => {
-  const url = '/api/selfLiveMonthEffect/listDayEffect'
+  const url = '/athena-service//api/selfLiveMonthEffect/listDayEffect'
   const urlDoc = apiDoc[url]
-  parserUrl(urlDoc)
+  console.log(urlDoc);
+  const result = fakeData(urlDoc.mocks)
+  console.log(result);  
 })
-
-// module.exports = {
-//   name:"西瓜"
-// }
-
-// export const a = () => {}
-
-// export default 

@@ -1,6 +1,9 @@
-import faker from "faker";
-import { SchemaWithoutRef } from "__types__/common";
+
+// import faker from "faker";
+import  faker  from 'faker/locale/zh_CN';
+import { SchemaWithoutRef } from "../_types_/common";
 import { mapValues, isArray } from "lodash";
+import {formatDate} from '../utils'
 
 const booleanGenerator = () => faker.datatype.boolean();
 const stringGenerator = (enums?: any[]) => {
@@ -12,28 +15,26 @@ const numberGenerator = (max?: number, min?: number) =>
     min,
     max,
   });
-const fileGenerator = () => faker.system.mimeType();
-const dateTimeGenerator = () => faker.date.past().toISOString();
-const dateGenerator = () => dateTimeGenerator().slice(0, 10);
-const timeGenerator = () => dateTimeGenerator().slice(11);
-const urlGenerator = () => faker.internet.url();
-const ipv4Generator = () => faker.internet.ip();
-const ipv6Generator = () => faker.internet.ipv6();
-const emailGenerator = () => faker.internet.email();
+// const dateTimeGenerator = () => faker.date.past().toISOString();
+// const dateGenerator = () => dateTimeGenerator().slice(0, 10);
+// const timeGenerator = () => dateTimeGenerator().slice(11);
+// const urlGenerator = () => faker.internet.url();
+// const ipv4Generator = () => faker.internet.ip();
+// const emailGenerator = () => faker.internet.email();
 
-const fixedFakeData = {
-  boolean: true,
-  string: "fake string",
-  number: 123,
-  file: "video/jpm",
-  dateTime: "2020-10-17T06:27:33.963Z",
-  date: "2021-04-16",
-  time: "19:01:06.839Z",
-  url: "https://hilda.name",
-  ipv4: "10.88.109.17",
-  ipv6: "b2f5:9c63:52b2:640b:0360:0e45:9451:0c82",
-  email: "john@example.com",
-};
+/**
+ * @description: type => string
+ * date yyyy/MM/dd
+ * date-time yyyy/MM/dd hh:mm:ss
+ */
+const strGenerator = {
+  'date': () => formatDate(faker.date.past(), 'yyyy/MM/dd'),
+  'date-time': () => formatDate(faker.date.past(), 'yyyy/MM/dd hh:mm:ss'),
+  'email': () => faker.internet.email(),
+  'url': () => faker.internet.url(),
+  'ipv4': () => faker.internet.ip()
+}
+
 
 const fakerObject = (schema: SchemaWithoutRef) => {
   return mapValues(schema.properties, (item) => fakeData(item));
@@ -51,7 +52,7 @@ export const fakeData = (schema: SchemaWithoutRef): ReturnType<any> => {
   if (!schema) {
     return schema;
   }
-
+  
   if(schema.example) return schema.example
 
   if (schema.type === "object" || schema.properties) {
@@ -71,31 +72,15 @@ export const fakeData = (schema: SchemaWithoutRef): ReturnType<any> => {
   }
 
   if (schema.type === "string") {
-    if (schema.format === "date") {
-      return dateGenerator();
+    const types = ['date', 'date-time', 'email', 'url']
+    if(types.includes(schema.format)) {
+      console.log(strGenerator[schema.format]?.());
+      
+      return strGenerator[schema.format]?.()
     }
 
-    if (schema.format === "time") {
-      return timeGenerator();
-    }
-
-    if (schema.format === "date-time") {
-      return dateTimeGenerator();
-    }
-    if (schema.format === "uri") {
-      return urlGenerator();
-    }
-
-    if (schema.format === "ipv4") {
-      return ipv4Generator();
-    }
-
-    if (schema.format === "email") {
-      return emailGenerator();
-    }
-
-    if (schema.format === 'enums') {
-      return stringGenerator(schema.enums);
+    if (schema.format === 'enum' || schema.enum) {
+      return stringGenerator(schema.enum);
     }
 
     return stringGenerator();
@@ -103,30 +88,3 @@ export const fakeData = (schema: SchemaWithoutRef): ReturnType<any> => {
 
   return null;
 };
-
-export class FakeDataGenerator {
-  // constructor(private isFixed: boolean) {}
-
-  // static of(isFixed: boolean = false) {
-  //   return new FakeDataGenerator(isFixed);
-  // }
-
-  // boolean = () => {
-  //   if (this.isFixed) {
-  //     return fixedFakeData.boolean;
-  //   }
-
-  //   return booleanGenerator();
-  // };
-
-  // string = (enums?: any[]) => {
-  //   if (this.isFixed) {
-  //     return fixedFakeData.string;
-  //   }
-
-  //   return stringGenerator(enums);
-  // };
-
-  
-
-}
