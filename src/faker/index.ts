@@ -1,9 +1,11 @@
 
 // import faker from "faker";
-import  faker  from 'faker/locale/zh_CN';
+// import  faker  from 'faker/locale/zh_CN';
+import { faker } from '@faker-js/faker/locale/zh_CN';
 import { SchemaWithoutRef } from "../_types_/common";
 import { mapValues, isArray } from "lodash";
 import {formatDate} from '../utils'
+faker.locale = 'zh_CN'
 
 const booleanGenerator = () => faker.datatype.boolean();
 const stringGenerator = (enums?: any[]) => {
@@ -74,8 +76,6 @@ export const fakeData = (schema: SchemaWithoutRef): ReturnType<any> => {
   if (schema.type === "string") {
     const types = ['date', 'date-time', 'email', 'url']
     if(types.includes(schema.format)) {
-      console.log(strGenerator[schema.format]?.());
-      
       return strGenerator[schema.format]?.()
     }
 

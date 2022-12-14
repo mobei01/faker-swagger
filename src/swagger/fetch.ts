@@ -1,6 +1,5 @@
-import {ApiDoc} from '../_types_/swagger'
 import { IOpenAPI, IOperation, IResponses } from '../_types_/OpenAPI'
-import {SchemaWithoutRef, FakeGenOutput} from '../_types_/common'
+import {SchemaWithoutRef, FakeGenOutput, ApiDoc} from '../_types_/common'
 import { Spec } from "swagger-schema-official";
 
 import SwaggerClient from 'swagger-client';

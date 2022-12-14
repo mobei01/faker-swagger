@@ -1,5 +1,13 @@
-import { ISchema } from "./OpenAPI";
+import { ISchema, IOpenAPI } from "./OpenAPI";
+import { Spec } from "swagger-schema-official";
 
+export interface ApiDoc {
+  apis: object,
+  errors: any[],
+  originalSpec: any,
+  spec: Spec | IOpenAPI,
+  url: string
+}
 export interface SchemaWithoutRef extends ISchema {
   not?: ISchema;
   allOf?: Array<ISchema>;

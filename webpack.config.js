@@ -89,9 +89,9 @@ module.exports = {
       template: './src/index.html',
     }),
     // 把整个目录copy过去
-    new CopyWebpackPlugin({
-      patterns: [{ from: path.resolve(__dirname, './static') }],
-    }),
+    // new CopyWebpackPlugin({
+    //   patterns: [{ from: path.resolve(__dirname, './static') }],
+    // }),
 
     new ESLintPlugin({
       context: './src', // 检查目录
